@@ -1,0 +1,5 @@
+{
+  "name": "AI Image Dataset Generator",
+  "description": "A scalable and configurable tool for generating custom image datasets using AI. Define object types, scenes, and labels to automate the image generation and annotation pipeline for various machine learning tasks.",
+  "requestFramePermissions": []
+}
