@@ -97,7 +97,26 @@ const App: React.FC = () => {
     } finally {
         setIsLoading(false);
     }
-};
+  };
+
+  const handleDownloadAll = useCallback(() => {
+    if (generatedImages.length === 0) return;
+
+    const downloadWithDelay = (image: GeneratedImage, index: number) => {
+      setTimeout(() => {
+        const link = document.createElement('a');
+        link.href = `data:image/jpeg;base64,${image.base64}`;
+        // Sanitize prompt for filename
+        const sanitizedPrompt = image.prompt.replace(/[^a-z0-9]/gi, '_').toLowerCase().slice(0, 30);
+        link.download = `img_${sanitizedPrompt}_${image.id.slice(0, 8)}.jpeg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }, index * 200); // 200ms delay between downloads
+    };
+
+    generatedImages.forEach(downloadWithDelay);
+  }, [generatedImages]);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-900">
@@ -118,6 +137,7 @@ const App: React.FC = () => {
                 isLoading={isLoading} 
                 error={error}
                 onGenerateVariation={handleGenerateVariation} 
+                onDownloadAll={handleDownloadAll}
             />
         </div>
       </main>

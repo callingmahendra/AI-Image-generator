@@ -9,9 +9,10 @@ interface ResultsPanelProps {
   isLoading: boolean;
   error: string | null;
   onGenerateVariation: (image: GeneratedImage) => void;
+  onDownloadAll: () => void;
 }
 
-const ResultsPanel: React.FC<ResultsPanelProps> = ({ images, isLoading, error, onGenerateVariation }) => {
+const ResultsPanel: React.FC<ResultsPanelProps> = ({ images, isLoading, error, onGenerateVariation, onDownloadAll }) => {
     
   const handleDownload = (base64: string, id: string) => {
     const link = document.createElement('a');
@@ -61,7 +62,7 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({ images, isLoading, error, o
         <div className="space-y-8">
             {Object.entries(groupedImages).map(([prompt, imageGroup]) => (
                 <div key={prompt}>
-                    <div className="flex items-center justify-between mb-4 sticky top-0 bg-slate-900/80 backdrop-blur-sm py-2 px-1 z-10">
+                    <div className="flex items-center justify-between mb-4 sticky top-0 bg-slate-800/80 backdrop-blur-sm py-2 px-1 z-10">
                         <h3 className="text-lg font-semibold text-indigo-300">{prompt}</h3>
                         {isLoading && <Spinner />}
                     </div>
@@ -114,9 +115,29 @@ const ResultsPanel: React.FC<ResultsPanelProps> = ({ images, isLoading, error, o
   };
 
   return (
-    <div className="p-6 h-full overflow-y-auto">
-      <div className={`${images.length > 0 ? 'block' : 'flex items-center justify-center h-full'}`}>
-        {renderContent()}
+    <div className="p-6 h-full flex flex-col gap-4">
+      {images.length > 0 && !error && (
+        <div className="flex-shrink-0 flex justify-between items-center pb-4 border-b border-slate-700/50">
+            <div>
+                <h2 className="text-xl font-semibold text-indigo-300">Generated Dataset</h2>
+                <p className="text-sm text-slate-400">{images.length} image{images.length !== 1 ? 's' : ''} in total.</p>
+            </div>
+            <button
+                onClick={onDownloadAll}
+                disabled={isLoading}
+                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-900/50 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-md transition duration-300"
+                aria-label="Download all generated images"
+                title="Download All Images"
+            >
+                <DownloadIcon />
+                <span>Download All</span>
+            </button>
+        </div>
+      )}
+      <div className="flex-grow overflow-y-auto pr-2">
+        <div className={`${images.length > 0 ? 'block' : 'flex items-center justify-center h-full'}`}>
+          {renderContent()}
+        </div>
       </div>
     </div>
   );

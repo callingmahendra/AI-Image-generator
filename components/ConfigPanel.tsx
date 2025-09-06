@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { type GenerationRequest, type AspectRatio } from '../types';
 import { ASPECT_RATIOS } from '../constants';
@@ -40,6 +41,12 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({
 
   return (
     <div className="p-6 bg-slate-800/50 rounded-lg shadow-lg h-full overflow-y-auto flex flex-col">
+      <div className="mb-6 pb-4 border-b border-slate-700/50">
+        <h2 className="text-xl font-semibold mb-2 text-indigo-300">About This Tool</h2>
+        <p className="text-sm text-slate-400">
+          This AI Image Dataset Generator is a scalable and configurable tool for creating custom image datasets using generative AI. Define object types, scenes, and labels to automate the image generation and annotation pipeline. It's perfect for bootstrapping computer vision projects, creating synthetic data for model training, or quickly generating visual assets for creative projects.
+        </p>
+      </div>
       <h2 className="text-xl font-semibold mb-4 text-indigo-300">1. Configure Generation Tasks</h2>
       
       <form onSubmit={handleAddRequest} className="space-y-4 mb-6">
