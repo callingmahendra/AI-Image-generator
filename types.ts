@@ -16,4 +16,5 @@ export interface GeneratedImage {
   prompt: string;
   labels: string[];
   base64: string;
+  parentId?: string;
 }
